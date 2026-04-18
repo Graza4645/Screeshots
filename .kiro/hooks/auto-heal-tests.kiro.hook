@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Auto-Heal Failing Tests",
+  "description": "After the agent stops, checks if the last action was a test run that failed. If so, automatically analyzes the failure, fixes the root cause (locators, test data, page object methods, or assertions), and re-runs the failing test to confirm the fix.",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if the last action involved running Playwright tests (npx playwright test). If tests FAILED:\n\n1. Read the test failure output carefully — identify which test(s) failed and the exact error message.\n2. Diagnose the root cause. Common causes:\n   - Locator not matching (element changed on page) → Use MCP Playwright browser_navigate + browser_snapshot to inspect the actual page, then update the locator in the PageObject file.\n   - Timeout waiting for element → Check if the page loaded correctly, add proper waits.\n   - Assertion mismatch → Check expected vs actual values, update test data or assertion.\n   - Import path error → Verify relative paths follow the ../PageObject/ and ../testData/ convention.\n   - Navigation failure → Verify the URL in testData is correct and reachable.\n3. Fix the identified issue in the correct file (PageObject, Script, or testData).\n4. Re-run ONLY the failed tests using: cmd /c \"npx playwright test --last-failed\"\n   This uses Playwright's built-in --last-failed flag which automatically picks up only the tests that failed in the previous run.\n5. If all pass, report success. If tests fail again with a DIFFERENT error, repeat the diagnosis. If the same error persists after 2 fix attempts, stop and report the issue to the user.\n\nIMPORTANT: Do NOT re-run if tests already PASSED. Only trigger healing on failures."
+  }
+}

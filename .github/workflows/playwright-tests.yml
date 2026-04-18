@@ -1,0 +1,134 @@
+name: Playwright Tests CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  test:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium browser
+        run: npx playwright install chromium --with-deps
+
+      - name: Run all Playwright tests
+        run: npx playwright test
+        continue-on-error: true
+        id: test-run
+
+      - name: Re-run only failed tests (auto-retry)
+        if: steps.test-run.outcome == 'failure'
+        run: npx playwright test --last-failed
+        continue-on-error: true
+        id: retry-run
+
+      - name: Generate Allure report
+        if: always()
+        run: npx allure generate allure-results --clean -o allure-report
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-html-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+
+      - name: Upload test results (JSON)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 30
+
+      - name: Upload failure screenshots and videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failure-artifacts
+          path: |
+            test-results/**/*.png
+            test-results/**/*.webm
+            test-results/**/*.zip
+          retention-days: 30
+
+      - name: Upload custom screenshots (from ReusableMethods)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-screenshots
+          path: |
+            screenshots/
+            tests/Login/screenshots/
+            tests/Hiring_Tabulation_SalaryCalculator/screenshots/
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Final status check
+        if: steps.test-run.outcome == 'failure' && steps.retry-run.outcome == 'failure'
+        run: |
+          echo "❌ Tests failed even after retry. Check the uploaded reports for details."
+          exit 1
+
+      - name: Tests passed
+        if: steps.test-run.outcome == 'success' || steps.retry-run.outcome == 'success'
+        run: echo "✅ All tests passed!"
+
+  deploy-report:
+    name: Deploy Allure Report to GitHub Pages
+    needs: test
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download Allure report
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

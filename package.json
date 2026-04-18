@@ -1,0 +1,32 @@
+{
+  "name": "playwright-pom-automation",
+  "version": "1.0.0",
+  "description": "Playwright POM Automation Framework with Jira Integration",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:smoke": "npx playwright test --grep @smoke",
+    "test:regression": "npx playwright test --grep @regression",
+    "test:login": "npx playwright test tests/Login/Script/",
+    "test:login:headed": "npx playwright test tests/Login/Script/ --headed",
+    "test:salary": "npx playwright test tests/SalaryCalculator/Script/",
+    "test:salary:headed": "npx playwright test tests/SalaryCalculator/Script/ --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:last-failed": "npx playwright test --last-failed",
+    "test:last-failed:headed": "npx playwright test --last-failed --headed",
+    "report": "npx playwright show-report",
+    "report:allure:generate": "node scripts/allure-report.js generate",
+    "report:allure:open": "node scripts/allure-report.js open",
+    "report:allure": "node scripts/allure-report.js both",
+    "test:allure": "npx playwright test && node scripts/allure-report.js both",
+    "test:allure:smoke": "npx playwright test --grep @smoke && node scripts/allure-report.js both",
+    "test:allure:regression": "npx playwright test --grep @regression && node scripts/allure-report.js both"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "allure-commandline": "^2.38.1",
+    "allure-playwright": "^3.7.1",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2"
+  }
+}

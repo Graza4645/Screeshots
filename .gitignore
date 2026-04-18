@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Test results and reports
+test-results/
+allure-results/
+allure-report/
+playwright-report/
+screenshots/
+
+# Environment variables
+.env
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

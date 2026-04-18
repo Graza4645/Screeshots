@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "disabled": false,
+      "autoApprove": [
+        "browser_snapshot",
+        "browser_click",
+        "browser_navigate",
+        "browser_type"
+      ]
+    },
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "@aashari/mcp-server-atlassian-jira"],
+      "env": {
+        "ATLASSIAN_SITE_NAME": "REPLACE-WITH-YOUR-SITE.atlassian.net",
+        "ATLASSIAN_USER_EMAIL": "REPLACE-WITH-YOUR-EMAIL",
+        "ATLASSIAN_API_TOKEN": "REPLACE-WITH-YOUR-API-TOKEN",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+      },
+      "disabled": false,
+      "timeout": 120000
+    }
+  }
+}

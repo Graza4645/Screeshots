@@ -1,0 +1,4 @@
+TC_ID,Scenario,BasicSalary,HRA,DA,SpecialAllowance,ExpectedGross,Tags
+TC_SALARY_001,Valid salary calculation,50000,20000,15000,10000,95000,@smoke
+TC_SALARY_002,Minimum salary values,10000,5000,3000,2000,20000,@regression
+TC_SALARY_003,Zero values for all fields,0,0,0,0,0,@regression

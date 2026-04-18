@@ -1,0 +1,9 @@
+{
+  "name": "QA Team - Local Machine",
+  "type": "local",
+  "buildName": "Playwright POM Automation",
+  "buildOrder": 1,
+  "reportName": "Allure Report - QA Environment",
+  "reportUrl": "",
+  "buildUrl": ""
+}

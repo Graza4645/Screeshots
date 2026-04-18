@@ -1,0 +1,49 @@
+[
+  {
+    "name": "Locator / Element Not Found",
+    "description": "Element locator did not match any element on the page. Inspect the page and update the PageObject.",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*(?:locator\\.fill|locator\\.click|waiting for|getByRole|getByText|getByTestId|Timeout.*exceeded).*"
+  },
+  {
+    "name": "Navigation / URL Error",
+    "description": "Page URL could not be resolved or loaded. Check the URL in testData.",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*(?:ERR_NAME_NOT_RESOLVED|ERR_CONNECTION_REFUSED|ERR_INTERNET_DISCONNECTED|page\\.goto|net::ERR_).*"
+  },
+  {
+    "name": "Assertion Failure",
+    "description": "Test assertion did not match expected value. Check expected vs actual in test data or assertions.",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*(?:expect\\(|toHaveTitle|toHaveURL|toBeTruthy|toBe\\(|toEqual|toContain|Expected|Received).*"
+  },
+  {
+    "name": "Timeout Error",
+    "description": "Action or navigation exceeded the configured timeout. Page may be slow or element not present.",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*(?:Timeout \\d+ms exceeded|TimeoutError|navigationTimeout|actionTimeout).*"
+  },
+  {
+    "name": "Import / Module Error",
+    "description": "Module import failed. Check relative paths follow ../PageObject/ and ../testData/ convention.",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*(?:Cannot find module|MODULE_NOT_FOUND|require\\(|import ).*"
+  },
+  {
+    "name": "Authentication Error",
+    "description": "Login or authentication step failed. Verify credentials in testData.",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(?:login|auth|password|credential|unauthorized|403|401).*"
+  },
+  {
+    "name": "Skipped Tests",
+    "description": "Tests marked as test.skip — waiting for real application URL or feature implementation.",
+    "matchedStatuses": ["skipped"]
+  },
+  {
+    "name": "Unknown / Other Failures",
+    "description": "Unclassified failure. Review the test output manually.",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*"
+  }
+]
