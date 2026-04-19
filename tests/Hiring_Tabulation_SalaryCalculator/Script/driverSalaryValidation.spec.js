@@ -60,13 +60,12 @@ const driverSalaryByLevel = {
     'L6': 0, 'L5': 0, 'L4': 0, 'L3': 0, 'L2': 0, 'L1': 0
 };
 
+// VALIDATION RUN: exactly 1 scenario to verify artifact download works
 const testSets = [
     { driverOption: 'Yes', label: 'Driver_Yes' },
-    { driverOption: 'No',  label: 'Driver_No' },
 ];
-
-// const locationList = ['Jharkhand', 'Ahmedabad'];
-// VALIDATION RUN: 1 scenario only to verify artifact download works
+const validationCategories = ['Sales & AM'];
+const validationLevels = ['L10'];
 const locationList = ['Ahmedabad'];
 
 
@@ -75,8 +74,8 @@ const annualFixed = '498765';
 let scenarioCount = 1;
 
 for (const testSet of testSets) {
-    for (const category of categories) {
-        for (const level of levels) {
+    for (const category of validationCategories) {
+        for (const level of validationLevels) {
             for (const location of locationList) {
                 const num = scenarioCount++;
                 const catShort = category.replace('Non Sales - Technology or Product', 'NS_Tech')
