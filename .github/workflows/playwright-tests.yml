@@ -19,7 +19,7 @@ jobs:
           node-version: 22
           cache: 'npm'
       - run: npm ci
-      - run: npx playwright install --with-deps
+      - run: npx playwright install chromium firefox --with-deps
       - name: Run Driver Salary Tests
         run: npx playwright test driverSalaryValidation.spec.js
         continue-on-error: true
