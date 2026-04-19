@@ -8,6 +8,198 @@ on:
   workflow_dispatch:
 
 jobs:
+  test-functional:
+    name: Functional Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Functional Tests
+        run: npx playwright test functional.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-functional
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/Functional/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-esic:
+    name: ESIC Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run ESIC Tests
+        run: npx playwright test esicValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-esic
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/ESIC/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-pf:
+    name: PF Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run PF Tests
+        run: npx playwright test pfValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-pf
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/PF/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-lta:
+    name: LTA Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run LTA Tests
+        run: npx playwright test ltaValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-lta
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/LTA/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-meal:
+    name: Meal Allowance Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Meal Allowance Tests
+        run: npx playwright test mealAllowanceValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-meal
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/MealAllowance/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-statutory-bonus:
+    name: Statutory Bonus Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Statutory Bonus Tests
+        run: npx playwright test statutoryBonusValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-statutory-bonus
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/StatutoryBonus/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-minimum-wages:
+    name: Minimum Wages Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Minimum Wages Tests
+        run: npx playwright test minimumWagesValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-minimum-wages
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/MinimumWages/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-vehicle:
+    name: Vehicle Maintenance Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Vehicle Maintenance Tests
+        run: npx playwright test vehicleMaintenanceValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-vehicle
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/VehicleMaintenance/
+          retention-days: 30
+          if-no-files-found: ignore
+
   test-driver:
     name: Driver Salary Validation
     runs-on: ubuntu-latest
@@ -23,8 +215,7 @@ jobs:
       - name: Run Driver Salary Tests
         run: npx playwright test driverSalaryValidation.spec.js
         continue-on-error: true
-        id: test-run
-      - name: Upload partial screenshots (runs even if cancelled)
+      - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -32,16 +223,99 @@ jobs:
           path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/DriverSalary/
           retention-days: 30
           if-no-files-found: ignore
-      - name: Generate Allure report
+
+  test-ideal-perf:
+    name: Ideal Performance Pay Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Ideal Performance Pay Tests
+        run: npx playwright test idealPerformancePay.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
         if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-ideal-perf
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/IdealPerformancePay/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-total-benefits:
+    name: Total Benefits Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Total Benefits Tests
+        run: npx playwright test totalBenefitsValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-total-benefits
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/TotalBenefits/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  test-total-fixed:
+    name: Total Fixed CTC Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - name: Run Total Fixed CTC Tests
+        run: npx playwright test totalFixedCTCValidation.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-total-fixed
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/TotalFixedCTC/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  generate-report:
+    name: Generate Allure Report
+    needs: [test-functional, test-esic, test-pf, test-lta, test-meal, test-statutory-bonus, test-minimum-wages, test-vehicle, test-driver, test-ideal-perf, test-total-benefits, test-total-fixed]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - name: Generate Allure report
         run: |
           mkdir -p allure-results
           npx allure generate allure-results --clean -o allure-report
       - name: Upload Allure report
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
           retention-days: 30
-          if-no-files-found: ignore
