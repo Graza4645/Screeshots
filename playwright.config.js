@@ -11,7 +11,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 1,  // Auto-retry failed tests once locally, twice in CI
-  workers: 10,
+  workers: 1,
   reporter: [
     ['html', { open: 'never' }],
     ['json', { outputFile: 'test-results/results.json' }],
