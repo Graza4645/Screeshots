@@ -66,7 +66,8 @@ const testSets = [
 ];
 
 // const locationList = ['Jharkhand', 'Ahmedabad'];
-const locationList = locations;
+// VALIDATION RUN: 1 scenario only to verify artifact download works
+const locationList = ['Ahmedabad'];
 
 
 
