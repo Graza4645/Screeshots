@@ -73,7 +73,9 @@ const idealPerfPayMap = {
     'L1':  { 'Sales & AM': null, 'Non Sales - Technology or Product': null, 'Non Sales - Rest': null },
 };
 
-// categories, levels, locations imported from testData
+// categories, locations imported from testData
+// levels: only use levels defined in idealPerfPayMap (not all testData levels)
+const idealLevels = Object.keys(idealPerfPayMap);
 const defaultLocation = 'Bengaluru';
 
 
@@ -92,7 +94,7 @@ function parseCurrency(str) {
 let scenarioCount = 1;
 
 for (const category of categories) {
-    for (const level of levels) {
+    for (const level of idealLevels) {
         for (const location of locations) {
         const num = scenarioCount++;
         const percentage = idealPerfPayMap[level][category];
