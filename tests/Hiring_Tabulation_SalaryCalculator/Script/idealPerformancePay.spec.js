@@ -10,7 +10,7 @@
 
 import SalaryCalculatorPage from '../PageObject/SalaryCalculatorPage.js';
 import { test, expect } from '@playwright/test';
-import { validdata } from '../TestData/testData.js';
+import { validdata, categories, levels, locations } from '../TestData/testData.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -73,42 +73,8 @@ const idealPerfPayMap = {
     'L1':  { 'Sales & AM': null, 'Non Sales - Technology or Product': null, 'Non Sales - Rest': null },
 };
 
-const categories = ['Sales & AM', 'Non Sales - Technology or Product', 'Non Sales - Rest'];
-const levels = Object.keys(idealPerfPayMap);
+// categories, levels, locations imported from testData
 const defaultLocation = 'Bengaluru';
-// const locations = ['Hyderabad', 'Jharkhand'];
-
-
-export const locations = [
-    'Ahmedabad', 'Bengaluru', 'Chennai', 'Delhi',
-    'Hyderabad', 'Kolkata', 'Mumbai', 'Pune', 'Vadodara',
-    'Andhra Pradesh', 'Haryana', 'Ernakulam', 'Bhopal',
-    'Central Gujarat', 'Gujarat', 'Guntur', 'Indore',
-    'Jaipur', 'Kerala', 'Kochi', 'Kolhapur', 'Bhiwandi',
-    'Madurai', 'Gandhinagar', 'Mysore', 'Nagpur', 'Solapur',
-    'Vijayawada', 'Tirupati', 'West - Ahmedabad', 'Trichy',
-    'Trivandrum', 'Uttarakhand', 'Manesar', 'Meerut',
-    'Mizoram', 'Mohali', 'Morbi', 'Nadiad', 'Noida',
-    'North - Bilaspur', 'Patna', 'Pithampur', 'Raipur',
-    'Rajkot', 'Ranchi', 'Sri City', 'Surat', 'Uluberia',
-    'Vallam', 'Valsad', 'Wardha', 'Aligarh', 'Bahadurgarh',
-    'Balasore', 'Bawal', 'Agartala', 'Bhubaneswar', 'Bhuj',
-    'Binola', 'Chandigarh', 'Darbhanga', 'Dehradun',
-    'Farukh Nagar Jahjjar', 'Gorakhpur', 'Gurgaon', 'Guwahati',
-    'Haldwani', 'Hamirpur', 'Jamshedpur', 'Kalol', 'Kanpur',
-    'Kurukshetra', 'Laksar', 'Jharkhand', 'Lucknow', 'Amritsar',
-    'Goa', 'Karagpur', 'Faridabad', 'Punjab', 'Assam',
-    'Zaheerabad', 'Ludhiana', 'Atali', 'Uttar Pradesh',
-    'Haridwar', 'Krishnagiri', 'Moradabad', 'Aizawl', 'Bihar',
-    'Orissa', 'Visakhapatnam', 'Barwani', 'Betul', 'Hathras',
-    'Tanuku', 'Dhanbad', 'Agra', 'Muzaffarpur', 'Coimbatore',
-    'Mangalore', 'Mathura', 'Vizag', 'Srinagar', 'Jammu',
-    'Imphal', 'Himachal Pradesh', 'Ratlam', 'Sonipat', 'Jind',
-    'Kannur', 'Siliguri', 'Sambalpur', 'Saharanpur', 'Jabalpur',
-    'Bharuch', 'Bareilly', 'Prayagraj', 'Rajahmundry', 'Kota',
-    'Bilaspur', 'Salem', 'Kottayam', 'Thrissur', 'Hosur',
-    'Pantnagar', 'Waluj', 'Alwar'
-];
 
 
 const defaultAnnualFixed = '500000';

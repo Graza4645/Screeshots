@@ -1880,3 +1880,202 @@ const ReusableMethods = require('../../Utils/ReusableMethods');
 When you use `ReusableMethods.takeScreenshot(page, 'screenshots/login', 'after-login')` in your tests, those screenshots are saved to the `screenshots/` folder and uploaded as the `test-screenshots` artifact in CI.
 
 ---
+
+
+## Step 18: GitHub Actions CI/CD Pipeline (Complete Details)
+
+> **File:** `.github/workflows/playwright-tests.yml`
+
+### Triggers
+
+| Event | When |
+|---|---|
+| `push` | Code pushed to `main`, `master`, or `develop` |
+| `pull_request` | PR opened/updated against `main`, `master`, or `develop` |
+| `workflow_dispatch` | Manual trigger from GitHub Actions UI (Run workflow button) |
+
+### Architecture — 12 Parallel Jobs + 1 Report Job
+
+All 12 spec files run **simultaneously** as separate jobs. Each job gets its own GitHub runner (virtual machine), 6-hour timeout, and 3 workers.
+
+```
+Push to main
+  │
+  ├── test-functional          → functional.spec.js
+  ├── test-esic                → esicValidation.spec.js
+  ├── test-pf                  → pfValidation.spec.js
+  ├── test-lta                 → ltaValidation.spec.js
+  ├── test-meal                → mealAllowanceValidation.spec.js
+  ├── test-statutory-bonus     → statutoryBonusValidation.spec.js
+  ├── test-minimum-wages       → minimumWagesValidation.spec.js
+  ├── test-vehicle             → vehicleMaintenanceValidation.spec.js
+  ├── test-driver              → driverSalaryValidation.spec.js
+  ├── test-ideal-perf          → idealPerformancePay.spec.js
+  ├── test-total-benefits      → totalBenefitsValidation.spec.js
+  ├── test-total-fixed         → totalFixedCTCValidation.spec.js
+  │        ↑ all 12 run at the SAME TIME (parallel)
+  │
+  └── generate-report          → runs AFTER all 12 finish → Allure report
+```
+
+### What Each Job Does (Step by Step)
+
+```yaml
+steps:
+  1. Checkout code                    → actions/checkout@v4
+  2. Setup Node.js 22 with npm cache  → actions/setup-node@v4
+  3. npm ci                           → clean install dependencies
+  4. Install all browsers             → npx playwright install --with-deps
+     (Chromium + Firefox + WebKit)
+  5. Run spec file                    → npx playwright test <spec>.spec.js
+     - workers: 3 (3 tests run simultaneously)
+     - 3 browsers (Chrome, Firefox, WebKit)
+     - retries: 2 in CI
+     - continue-on-error: true (job doesn't fail, uploads artifacts)
+  6. Upload screenshots as artifact   → actions/upload-artifact@v4
+     - saved for 30 days
+     - downloadable from Actions tab
+```
+
+### Playwright Config Used in CI
+
+```javascript
+workers: 3,                    // 3 tests run at the same time
+retries: 2,                    // CI retries failed tests twice
+headless: true,                // No browser UI in CI
+screenshot: 'on',              // Screenshots for every test (pass or fail)
+video: 'retain-on-failure',    // Video only for failures
+trace: 'retain-on-failure',    // Trace only for failures
+projects: chromium, firefox, webkit  // All 3 browsers
+```
+
+### Time Estimates
+
+| Setup | Time per spec | Total time |
+|---|---|---|
+| Local, 1 worker, 1 browser | ~5 hours | ~60 hours (sequential) |
+| Local, 3 workers, 1 browser | ~1.7 hours | ~20 hours (sequential) |
+| CI/CD, 3 workers, 3 browsers, 12 parallel jobs | ~5 hours | **~5 hours** (parallel) |
+
+CI finishes in the time of the **longest single spec** because all 12 run simultaneously.
+
+### Artifacts Uploaded Per Job
+
+| Artifact | Contents |
+|---|---|
+| `screenshots-functional` | Functional test screenshots |
+| `screenshots-esic` | ESIC validation screenshots |
+| `screenshots-pf` | PF validation screenshots |
+| `screenshots-lta` | LTA validation screenshots |
+| `screenshots-meal` | Meal Allowance screenshots |
+| `screenshots-statutory-bonus` | Statutory Bonus screenshots |
+| `screenshots-minimum-wages` | Minimum Wages screenshots |
+| `screenshots-vehicle` | Vehicle Maintenance screenshots |
+| `screenshots-driver` | Driver Salary screenshots |
+| `screenshots-ideal-perf` | Ideal Performance Pay screenshots |
+| `screenshots-total-benefits` | Total Benefits screenshots |
+| `screenshots-total-fixed` | Total Fixed CTC screenshots |
+| `allure-report` | Allure HTML report |
+
+### How to Download Artifacts
+
+1. Go to GitHub repo → **Actions** tab
+2. Click on the workflow run
+3. Scroll to **Artifacts** section at the bottom
+4. Click any artifact to download as ZIP
+
+### Important Limitation — Corporate VPN
+
+The QA URL (`next-gen-eob-ui-qa.teamlease.com`) is **corporate/VPN-only**. GitHub Actions runners (Ubuntu cloud VMs) cannot reach it. Tests will fail on navigation in CI.
+
+**Workarounds:**
+
+| Option | How | Recommended? |
+|---|---|---|
+| **Run locally + push screenshots** | Run in Git Bash → `git add . && git push` | ✅ Current approach |
+| **Self-hosted runner** | Install GitHub Actions runner on office machine with VPN | ✅ Best for CI/CD |
+| **Wait for public URL** | Use CI/CD when app moves to staging/prod (public URL) | ✅ Future |
+
+### Running Locally (Current Workflow)
+
+```bash
+# Run all specs (takes hours)
+npx playwright test tests/Hiring_Tabulation_SalaryCalculator/Script/
+
+# Run specific spec
+npx playwright test functional.spec.js
+npx playwright test esicValidation.spec.js
+
+# After tests finish, push screenshots to GitHub
+git add .
+git commit -m "Test execution screenshots"
+git push
+```
+
+### Full `.yml` File
+
+```yaml
+name: Playwright Tests CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  test-functional:
+    name: Functional Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - name: Run Functional Tests (Chrome + Firefox + WebKit)
+        run: npx playwright test functional.spec.js
+        continue-on-error: true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-functional
+          path: tests/Hiring_Tabulation_SalaryCalculator/screenshots/Functional/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  # ... (same pattern for all 12 specs) ...
+
+  generate-report:
+    name: Generate Allure Report
+    needs: [test-functional, test-esic, test-pf, test-lta, test-meal,
+            test-statutory-bonus, test-minimum-wages, test-vehicle,
+            test-driver, test-ideal-perf, test-total-benefits, test-total-fixed]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - run: npm ci
+      - name: Generate Allure report
+        run: |
+          mkdir -p allure-results
+          npx allure generate allure-results --clean -o allure-report
+      - name: Upload Allure report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+```
+
+---
