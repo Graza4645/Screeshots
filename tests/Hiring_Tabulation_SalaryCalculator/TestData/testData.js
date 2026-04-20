@@ -17,7 +17,7 @@ export const categories = [
 
 export const levels = [
     'L10','L1', 'L2', 'L3', 'L4', 'L5',
-    'L6', 'L7', 'L8', 'L9', 'L10', 'LST', 'T0', 'CO'
+    'L6', 'L7', 'L8', 'L9', 'L10', 'LST'
 ];
 
 // export const locations = [
@@ -66,33 +66,40 @@ export const gtliByLevel = {
 
 
 
+// export const locations = [
+//     'Ahmedabad', 'Bengaluru', 'Chennai', 'Delhi',
+//     'Hyderabad', 'Kolkata', 'Mumbai', 'Pune', 'Vadodara',
+//     'Andhra Pradesh', 'Haryana', 'Ernakulam', 'Bhopal',
+//     'Central Gujarat', 'Gujarat', 'Guntur', 'Indore',
+//     'Jaipur', 'Kerala', 'Kochi', 'Kolhapur', 'Bhiwandi',
+//     'Madurai', 'Gandhinagar', 'Mysore', 'Nagpur', 'Solapur',
+//     'Vijayawada', 'Tirupati', 'West - Ahmedabad', 'Trichy',
+//     'Trivandrum', 'Uttarakhand', 'Manesar', 'Meerut',
+//     'Mizoram', 'Mohali', 'Morbi', 'Nadiad', 'Noida',
+//     'North - Bilaspur', 'Patna', 'Pithampur', 'Raipur',
+//     'Rajkot', 'Ranchi', 'Sri City', 'Surat', 'Uluberia',
+//     'Vallam', 'Valsad', 'Wardha', 'Aligarh', 'Bahadurgarh',
+//     'Balasore', 'Bawal', 'Agartala', 'Bhubaneswar', 'Bhuj',
+//     'Binola', 'Chandigarh', 'Darbhanga', 'Dehradun',
+//     'Farukh Nagar Jahjjar', 'Gorakhpur', 'Gurgaon', 'Guwahati',
+//     'Haldwani', 'Hamirpur', 'Jamshedpur', 'Kalol', 'Kanpur',
+//     'Kurukshetra', 'Laksar', 'Jharkhand', 'Lucknow', 'Amritsar',
+//     'Goa', 'Karagpur', 'Faridabad', 'Punjab', 'Assam',
+//     'Zaheerabad', 'Ludhiana', 'Atali', 'Uttar Pradesh',
+//     'Haridwar', 'Krishnagiri', 'Moradabad', 'Aizawl', 'Bihar',
+//     'Orissa', 'Visakhapatnam', 'Barwani', 'Betul', 'Hathras',
+//     'Tanuku', 'Dhanbad', 'Agra', 'Muzaffarpur', 'Coimbatore',
+//     'Mangalore', 'Mathura', 'Vizag', 'Srinagar', 'Jammu',
+//     'Imphal', 'Himachal Pradesh', 'Ratlam', 'Sonipat', 'Jind',
+//     'Kannur', 'Siliguri', 'Sambalpur', 'Saharanpur', 'Jabalpur',
+//     'Bharuch', 'Bareilly', 'Prayagraj', 'Rajahmundry', 'Kota',
+//     'Bilaspur', 'Salem', 'Kottayam', 'Thrissur', 'Hosur',
+//     'Pantnagar', 'Waluj', 'Alwar'
+// ];
+
+
 export const locations = [
     'Ahmedabad', 'Bengaluru', 'Chennai', 'Delhi',
     'Hyderabad', 'Kolkata', 'Mumbai', 'Pune', 'Vadodara',
     'Andhra Pradesh', 'Haryana', 'Ernakulam', 'Bhopal',
-    'Central Gujarat', 'Gujarat', 'Guntur', 'Indore',
-    'Jaipur', 'Kerala', 'Kochi', 'Kolhapur', 'Bhiwandi',
-    'Madurai', 'Gandhinagar', 'Mysore', 'Nagpur', 'Solapur',
-    'Vijayawada', 'Tirupati', 'West - Ahmedabad', 'Trichy',
-    'Trivandrum', 'Uttarakhand', 'Manesar', 'Meerut',
-    'Mizoram', 'Mohali', 'Morbi', 'Nadiad', 'Noida',
-    'North - Bilaspur', 'Patna', 'Pithampur', 'Raipur',
-    'Rajkot', 'Ranchi', 'Sri City', 'Surat', 'Uluberia',
-    'Vallam', 'Valsad', 'Wardha', 'Aligarh', 'Bahadurgarh',
-    'Balasore', 'Bawal', 'Agartala', 'Bhubaneswar', 'Bhuj',
-    'Binola', 'Chandigarh', 'Darbhanga', 'Dehradun',
-    'Farukh Nagar Jahjjar', 'Gorakhpur', 'Gurgaon', 'Guwahati',
-    'Haldwani', 'Hamirpur', 'Jamshedpur', 'Kalol', 'Kanpur',
-    'Kurukshetra', 'Laksar', 'Jharkhand', 'Lucknow', 'Amritsar',
-    'Goa', 'Karagpur', 'Faridabad', 'Punjab', 'Assam',
-    'Zaheerabad', 'Ludhiana', 'Atali', 'Uttar Pradesh',
-    'Haridwar', 'Krishnagiri', 'Moradabad', 'Aizawl', 'Bihar',
-    'Orissa', 'Visakhapatnam', 'Barwani', 'Betul', 'Hathras',
-    'Tanuku', 'Dhanbad', 'Agra', 'Muzaffarpur', 'Coimbatore',
-    'Mangalore', 'Mathura', 'Vizag', 'Srinagar', 'Jammu',
-    'Imphal', 'Himachal Pradesh', 'Ratlam', 'Sonipat', 'Jind',
-    'Kannur', 'Siliguri', 'Sambalpur', 'Saharanpur', 'Jabalpur',
-    'Bharuch', 'Bareilly', 'Prayagraj', 'Rajahmundry', 'Kota',
-    'Bilaspur', 'Salem', 'Kottayam', 'Thrissur', 'Hosur',
-    'Pantnagar', 'Waluj', 'Alwar'
-];
+]
